@@ -1,0 +1,30 @@
+plugins {
+    id "java"
+    id "application"
+    id 'com.gradleup.shadow' version '9.0.0-beta4'
+}
+jar {
+    manifest {
+        attributes(
+                "Main-Class" : "ayohee.create_cct_api.Main"
+        )
+    }
+}
+
+group = "ayohee"
+version = "0.0.2"
+
+application {
+    mainClassName = jar.manifest.attributes.get("Main-Class")
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.java-websocket:Java-WebSocket:1.6.0'
+    // https://mvnrepository.com/artifact/org.slf4j/slf4j-simple
+    implementation 'org.slf4j:slf4j-simple:2.0.16'
+
+}
