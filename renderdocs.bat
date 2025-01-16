@@ -1,0 +1,1 @@
+api2html openapidesc.yaml -o API.html --customLogo logo.png

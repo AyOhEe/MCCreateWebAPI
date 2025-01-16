@@ -1,0 +1,117 @@
+openapi: 3.1.0
+info:
+  title: "Create + CC: Tweaked Web Interface API Description"
+  version: 0.0.3
+paths:
+  /accesspoint/register:
+    get:
+      summary: Get a completely new MID (Machine ID).
+      description: Sends a new MID, which will be visible in the AP Control Panel. Use when setting up a new computer or turtle.
+      responses:
+        "200":
+          description: ok
+          content:
+            application/json:
+              schema:
+                type: string
+                description: Machine ID (32-bit hexadecimal value).
+                minLength: 8
+                maxLength: 8
+                example: "1a2b3c4d"
+
+  /accesspoint/listAPs:
+    get:
+      summary: Get a list of all AP and their configuration data.
+      description: Sends a list of every acccess-point (computer, turtle) on record.
+      responses:
+        "200":
+          description: ok
+          content:
+            application/json:
+              schema:
+                type: object
+                description: Access-points.
+                items:
+                  type: object
+                  properties:
+                    ap_type:
+                      type: string
+                      description: The type of access-point.
+                      enum: ["computer", "turtle"]
+                    group:
+                      type: string
+                      description: This AP's content group identifier.
+                    config:
+                      type: object
+                      description: Configuration data.
+                example:
+                  1a2b3c4d:
+                    ap_type: computer
+                    group: foundry
+                    config:
+                      update_interval: 30
+                      update_delay: 17
+
+  /inventory/total_contents:
+    get:
+      summary: Gets the combined contents of every access-point, grouped by resource.
+      description: Sums up every resource visible to every active access-point, and provides a full breakdown (by resource, by group) of where the resource is stored.
+      responses:
+        "200":
+          description: ok
+          content:
+            application/json:
+              schema:
+                type: object
+                description: Resources, by in-game identifier.
+                items:
+                  type: object
+                  description: A class of items in storage.
+                  properties:
+                    tags:
+                      type: array
+                      description: The tags used to group this item with other similar items.
+                      items:
+                        type: string
+                    stored:
+                      type: integer
+                      description: The total amount of the item held in storage across the world.
+                      minValue: 0
+                    breakdown:
+                      type: object
+                      description: The amount of the item stored in each group. Groups with none of this item are omitted.
+                      example:
+                example:
+                  "minecraft:iron_ingot":
+                    tags: ["Metal", "Intermediate"]
+                    stored: 43680
+                    breakdown:
+                      foundry: 42170
+                      spawn_drawers: 1510
+
+  /inventory/group_contents:
+    get:
+      summary: Gets the combined contents of every access-point, grouped by inventory group.
+      description: Returns the resources available to each group, and provides a full breakdown (by resource, by access-point) of where the resource is stored.
+      #TODO schema
+      #TODO request body
+
+  /inventory/accesspoint_contents:
+    get:
+      summary: Gets the contents visible to a given access-point, by in-game identifier.
+      description: Returns the resources available to the access-point.
+      #TODO schema
+      #TODO request body
+
+  #TODO group creation
+  #TODO group editing
+  #TODO group deletion (selectable fallback behaviour)
+  #TODO group assignment
+
+  #TODO access-point config editing
+  #TODO access-point deletion
+
+  #TODO get item sprite
+  #TODO create item profile
+  #TODO edit item profile
+  #TODO delete item profile

@@ -12,7 +12,7 @@ jar {
 }
 
 group = "ayohee"
-version = "0.0.2"
+version = "0.0.3"
 
 application {
     mainClassName = jar.manifest.attributes.get("Main-Class")

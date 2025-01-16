@@ -12,7 +12,7 @@ public class Main {
         int port = 8082;
 
 
-        System.out.println("Starting server at " + host + ":" + port);
+        System.out.println("Starting websocket server at " + host + ":" + port);
 
         WebSocketServer server = new SimpleServer(new InetSocketAddress(host, port));
         server.run();
