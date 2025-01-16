@@ -103,7 +103,13 @@ paths:
       #TODO schema
       #TODO request body
 
-  #TODO group creation
+  /group/create:
+    post:
+      summary: Creates a new, empty group of access-points
+      description: Creates a new group that access-points can be assigned to.
+      #TODO schema
+      #TODO request body
+      
   #TODO group editing
   #TODO group deletion (selectable fallback behaviour)
   #TODO group assignment
