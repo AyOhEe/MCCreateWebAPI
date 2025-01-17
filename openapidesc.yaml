@@ -3,7 +3,7 @@ info:
   title: "Create + CC: Tweaked Web Interface API Description"
   version: 0.0.3
 paths:
-  /accesspoint/register:
+  /accesspoint/create:
     get:
       summary: Get a completely new MID (Machine ID).
       description: Sends a new MID, which will be visible in the AP Control Panel. Use when setting up a new computer or turtle.
@@ -19,7 +19,20 @@ paths:
                 maxLength: 8
                 example: "1a2b3c4d"
 
-  /accesspoint/listAPs:
+  /accesspoint/edit:
+    post:
+      summary: Replaces the current details of the given MID with those provided.
+      description: Replaces the details of the provided MID with those provided in the request body. Only provided values will be updated, all others will be left unchanged.
+      #TODO schema
+      #TODO request body
+
+  /accesspoint/remove:
+    post:
+      summary: Schedules the MID for deletion in 24 hours. The access-point will be removed from its group. Marks an alert at the header of all pages.
+      #TODO schema
+      #TODO request body
+
+  /accesspoint/list:
     get:
       summary: Get a list of all AP and their configuration data.
       description: Sends a list of every acccess-point (computer, turtle) on record.
@@ -109,15 +122,59 @@ paths:
       description: Creates a new group that access-points can be assigned to.
       #TODO schema
       #TODO request body
-      
-  #TODO group editing
-  #TODO group deletion (selectable fallback behaviour)
-  #TODO group assignment
 
-  #TODO access-point config editing
-  #TODO access-point deletion
+  /group/edit:
+    post:
+      summary: Replaces the current details of the given group with those provided.
+      description: Replaces the details of the provided group with those provided in the request body. Only provided values will be updated, all others will be left unchanged.
+      #TODO schema
+      #TODO request body
 
-  #TODO get item sprite
-  #TODO create item profile
-  #TODO edit item profile
-  #TODO delete item profile
+  /group/remove:
+    post:
+      summary: Schedules the group for removal.
+      description: Marks the group for deletion in 24 hours. Members of a deleted group are left assigned to no group. Marks an alert at the header of all pages.
+      #TODO schema
+      #TODO request body
+
+  /group/list:
+    get:
+      summary: Returns all members of the asked group.
+      description: Returns an object containing every access-point assigned to the requested group.
+      #TODO schema
+      #TODO request body
+
+  /itemprofile/sprite:
+    get:
+      summary: Returns a .png of either the requested item or a default placeholder.
+      description: Attempts to look up the requested identifier. If found, and if a sprite is specified, it is returned. Otherwise a default is provided.
+      #TODO schema
+      #TODO request body
+
+  /itemprofile/create:
+    post:
+      summary: Creates an item profile with the provided values.
+      description: Creates an item profile with the provided values. Values not included are set to defaults.
+      #TODO schema
+      #TODO request body
+
+  /itemprofile/edit:
+    post:
+      summary: Replaces the current details of the given item profile with those provided.
+      description: Replaces the details of the provided item profile with those provided in the request body. Only provided values will be updated, all others will be left unchanged.
+      #TODO schema
+      #TODO request body
+
+  /itemprofile/remove:
+    post:
+      summary: Removes the item profile.
+      description: Removes the item profile from storage.
+      #TODO schema
+      #TODO request body
+
+  /itemprofile/list:
+    get:
+      summary: Returns every item profile.
+      description: Returns an object containing every item profile, by in-game identifier.
+      #TODO schema
+      #TODO request body
