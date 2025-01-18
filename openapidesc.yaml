@@ -23,13 +23,26 @@ paths:
     post:
       summary: Replaces the current details of the given MID with those provided.
       description: Replaces the details of the provided MID with those provided in the request body. Only provided values will be updated, all others will be left unchanged.
-      #TODO schema
+      responses:
+        "200":
+          description: ok
+        "400":
+          description: bad request
+        "404":
+          description: MID not found
       #TODO request body
 
   /accesspoint/remove:
     post:
-      summary: Schedules the MID for deletion in 24 hours. The access-point will be removed from its group. Marks an alert at the header of all pages.
-      #TODO schema
+      summary: Removes the record of the MID
+      description: The access-point will be removed from the system and from its group.
+      responses:
+        "200":
+          description: ok
+        "400":
+          description: bad request
+        "404":
+          description: MID not found
       #TODO request body
 
   /accesspoint/list:
@@ -106,75 +119,152 @@ paths:
     get:
       summary: Gets the combined contents of every access-point, grouped by inventory group.
       description: Returns the resources available to each group, and provides a full breakdown (by resource, by access-point) of where the resource is stored.
-      #TODO schema
-      #TODO request body
+      responses:
+        "200":
+          description: ok
+          content:
+            application/json:
+              schema:
+                type: object
+                #TODO
 
   /inventory/accesspoint_contents:
     get:
       summary: Gets the contents visible to a given access-point, by in-game identifier.
       description: Returns the resources available to the access-point.
-      #TODO schema
+      responses:
+        "200":
+          description: ok
+          content:
+            application/json:
+              schema:
+                type: object
+                #TODO
+        "400":
+          description: bad request
+        "404":
+          description: MID not found
+
       #TODO request body
 
   /group/create:
     post:
       summary: Creates a new, empty group of access-points
       description: Creates a new group that access-points can be assigned to.
-      #TODO schema
+      responses:
+        "200":
+          description: ok
+        "400":
+          description: bad request
+        "403":
+          description: group identifier already exists
       #TODO request body
 
   /group/edit:
     post:
       summary: Replaces the current details of the given group with those provided.
       description: Replaces the details of the provided group with those provided in the request body. Only provided values will be updated, all others will be left unchanged.
-      #TODO schema
+      responses:
+        "200":
+          description: ok
+        "400":
+          description: bad request
+        "404":
+          description: group identifier not found
       #TODO request body
 
   /group/remove:
     post:
       summary: Schedules the group for removal.
       description: Marks the group for deletion in 24 hours. Members of a deleted group are left assigned to no group. Marks an alert at the header of all pages.
-      #TODO schema
+      responses:
+        "200":
+          description: ok
+        "400":
+          description: bad request
+        "404":
+          description: group identifier not found
       #TODO request body
 
   /group/list:
     get:
       summary: Returns all members of the asked group.
       description: Returns an object containing every access-point assigned to the requested group.
-      #TODO schema
+      responses:
+        "200":
+          description: ok
+          content:
+            application/json:
+              schema:
+                type: object
+                #TODO
+        "400":
+          description: bad request
+        "404":
+          description: group identifier not found
       #TODO request body
 
   /itemprofile/sprite:
     get:
       summary: Returns a .png of either the requested item or a default placeholder.
       description: Attempts to look up the requested identifier. If found, and if a sprite is specified, it is returned. Otherwise a default is provided.
-      #TODO schema
+      responses:
+        "200":
+          description: ok
+          #TODO
+        "400":
+          description: bad request
+        "404":
+          description: item identifier not found
       #TODO request body
 
   /itemprofile/create:
     post:
       summary: Creates an item profile with the provided values.
       description: Creates an item profile with the provided values. Values not included are set to defaults.
-      #TODO schema
+      responses:
+        "200":
+          description: ok
+        "403":
+          description: item profile already exists
       #TODO request body
 
   /itemprofile/edit:
     post:
       summary: Replaces the current details of the given item profile with those provided.
       description: Replaces the details of the provided item profile with those provided in the request body. Only provided values will be updated, all others will be left unchanged.
-      #TODO schema
+      responses:
+        "200":
+          description: ok
+        "400":
+          description: bad request
+        "404":
+          description: item identifier not found
       #TODO request body
 
   /itemprofile/remove:
     post:
       summary: Removes the item profile.
       description: Removes the item profile from storage.
-      #TODO schema
+      responses:
+        "200":
+          description: ok
+        "400":
+          description: bad request
+        "404":
+          description: item identifier not found
       #TODO request body
 
   /itemprofile/list:
     get:
       summary: Returns every item profile.
       description: Returns an object containing every item profile, by in-game identifier.
-      #TODO schema
+      responses:
+        "200":
+          description: ok
+          content:
+            application/json:
+              schema:
+                type: object
+                #TODO
       #TODO request body
