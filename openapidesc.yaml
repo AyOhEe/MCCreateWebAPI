@@ -22,7 +22,7 @@ paths:
   /accesspoint/edit:
     post:
       summary: Replaces the current details of the given MID with those provided.
-      description: Replaces the details of the provided MID with those provided in the request body. Only provided values will be updated, all others will be left unchanged.
+      description: Replaces the details of the provided MID with those provided in the request body. Only provided values will be updated, all others will be left unchanged. Unused values will be ignored.
       responses:
         "200":
           description: ok
@@ -30,7 +30,20 @@ paths:
           description: bad request
         "404":
           description: MID not found
-      #TODO request body
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+                minLength: 8
+                maxLength: 8
+              new_details:
+                type: object
+
 
   /accesspoint/remove:
     post:
@@ -43,7 +56,14 @@ paths:
           description: bad request
         "404":
           description: MID not found
-      #TODO request body
+      parameters:
+        - name: MID
+          in: body
+          required: true
+          schema:
+            type: string
+            minLength: 8
+            maxLength: 8
 
   /accesspoint/list:
     get:

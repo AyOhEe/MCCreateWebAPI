@@ -1,1 +1,1 @@
-api2html openapidesc.yaml -o API.html --customLogo logo.png
+redoc-cli bundle -o API.html openapidesc.yaml
