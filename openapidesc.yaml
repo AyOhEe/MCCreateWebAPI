@@ -102,11 +102,9 @@ paths:
                     stored:
                       type: integer
                       description: The total amount of the item held in storage across the world.
-                      minValue: 0
                     breakdown:
                       type: object
-                      description: The amount of the item stored in each group. Groups with none of this item are omitted.
-                      example:
+                      description: The amount of the item stored in each group. Groups with none of this item are omitte
                 example:
                   "minecraft:iron_ingot":
                     tags: ["Metal", "Intermediate"]
@@ -126,7 +124,34 @@ paths:
             application/json:
               schema:
                 type: object
-                #TODO
+                description: Groups, by identifier
+                items:
+                  type: object
+                  description: Resources, by in-game identifier.
+                  items:
+                    type: object
+                    description: A class of items in storage.
+                    properties:
+                      tags:
+                        type: array
+                        description: The tags used to group this item with other similar items.
+                        items:
+                          type: string
+                      stored:
+                        type: integer
+                        description: The total amount of the item held in storage by the group.
+                        minValue: 0
+                      breakdown:
+                        type: object
+                        description: The amount of the item stored in each access-point. APs with none of this item are omitted.
+                example:
+                  foundry:
+                    "minecraft:iron_ingot":
+                      tags: [ "Metal", "Intermediate" ]
+                      stored: 2000
+                      breakdown:
+                        1a2b3c4d: 1500
+                        5d6c7b8a: 500
 
   /inventory/accesspoint_contents:
     get:
@@ -139,7 +164,24 @@ paths:
             application/json:
               schema:
                 type: object
-                #TODO
+                description: Resources, by in-game identifier.
+                items:
+                  type: object
+                  description: A class of items in storage.
+                  properties:
+                    tags:
+                      type: array
+                      description: The tags used to group this item with other similar items.
+                      items:
+                        type: string
+                    stored:
+                      type: integer
+                      description: The total amount of the item held in storage by the access-point.
+                      minValue: 0
+                example:
+                  "minecraft:iron_ingot":
+                    tags: [ "Metal", "Intermediate" ]
+                    stored: 1500
         "400":
           description: bad request
         "404":
@@ -188,6 +230,22 @@ paths:
 
   /group/list:
     get:
+      summary: Returns the identifiers of all groups
+      description: Returns a list containing the group identifier of every group stored on record
+      responses:
+        "200":
+          description: ok
+          content:
+            application/json:
+              schema:
+                type: array
+                description: Group identifiers
+                items:
+                  type: string
+                example: ["foundry", "spawn", "secondary production"]
+
+  /group/list_members:
+    get:
       summary: Returns all members of the asked group.
       description: Returns an object containing every access-point assigned to the requested group.
       responses:
@@ -197,7 +255,26 @@ paths:
             application/json:
               schema:
                 type: object
-                #TODO
+                description: Access-points
+                properties:
+                  ap_type:
+                    type: string
+                    description: The type of access-point.
+                    enum: [ "computer", "turtle" ]
+                  group:
+                    type: string
+                    description: This AP's content group identifier.
+                  config:
+                    type: object
+                    description: Configuration data.
+                example:
+                  1a2b3c4d:
+                    ap_type: computer
+                    group: foundry
+                    config:
+                      update_interval: 30
+                      update_delay: 17
+
         "400":
           description: bad request
         "404":
@@ -211,7 +288,9 @@ paths:
       responses:
         "200":
           description: ok
-          #TODO
+          content:
+            image/png:
+              description: The item's sprite, or a default sprite if no sprite is on record.
         "400":
           description: bad request
         "404":
@@ -266,5 +345,17 @@ paths:
             application/json:
               schema:
                 type: object
-                #TODO
-      #TODO request body
+                description: Item profiles.
+                items:
+                  type: object
+                  properties:
+                    common_name:
+                      type: string
+                      description: The in-game name for the item, or an otherwise recognisable name
+                    tags:
+                      type: array
+                      description: The tags used to group this item with other similar items.
+                example:
+                  "minecraft:iron_ingot":
+                    common_name: "Iron Ingot"
+                    tags: ["Metal", "Intermediate"]
