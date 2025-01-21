@@ -30,20 +30,20 @@ paths:
           description: bad request
         "404":
           description: MID not found
-      parameters:
-        - name: body
-          in: body
-          required: true
-          schema:
-            type: object
-            properties:
-              name:
-                type: string
-                minLength: 8
-                maxLength: 8
-              new_details:
-                type: object
-
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: Machine ID (32-bit hexadecimal value).
+                  minLength: 8
+                  maxLength: 8
+                  example: "1a2b3c4d"
+                new_details:
+                  type: object
 
   /accesspoint/remove:
     post:
@@ -56,14 +56,13 @@ paths:
           description: bad request
         "404":
           description: MID not found
-      parameters:
-        - name: MID
-          in: body
-          required: true
-          schema:
-            type: string
-            minLength: 8
-            maxLength: 8
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: string
+              minLength: 8
+              maxLength: 8
 
   /accesspoint/list:
     get:
@@ -74,22 +73,23 @@ paths:
           description: ok
           content:
             application/json:
+              type: object
               schema:
-                type: object
                 description: Access-points.
-                items:
-                  type: object
-                  properties:
-                    ap_type:
-                      type: string
-                      description: The type of access-point.
-                      enum: ["computer", "turtle"]
-                    group:
-                      type: string
-                      description: This AP's content group identifier.
-                    config:
-                      type: object
-                      description: Configuration data.
+                patternProperties:
+                  "[0-9a-f]{8}":
+                    type: object
+                    properties:
+                      ap_type:
+                        type: string
+                        description: The type of access-point.
+                        enum: ["computer", "turtle"]
+                      group:
+                        type: string
+                        description: This AP's content group identifier.
+                      config:
+                        type: object
+                        description: Configuration data.
                 example:
                   1a2b3c4d:
                     ap_type: computer
@@ -206,8 +206,18 @@ paths:
           description: bad request
         "404":
           description: MID not found
-
-      #TODO request body
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: Machine ID (32-bit hexadecimal value).
+                  minLength: 8
+                  maxLength: 8
+                  example: "1a2b3c4d"
 
   /group/create:
     post:
@@ -220,7 +230,16 @@ paths:
           description: bad request
         "403":
           description: group identifier already exists
-      #TODO request body
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: Group identifier
+                  example: "foundry"
 
   /group/edit:
     post:
@@ -233,7 +252,18 @@ paths:
           description: bad request
         "404":
           description: group identifier not found
-      #TODO request body
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                details:
+                  type: object
+                name:
+                  type: string
+                  description: Group identifier
+                  example: "foundry"
 
   /group/remove:
     post:
@@ -246,7 +276,16 @@ paths:
           description: bad request
         "404":
           description: group identifier not found
-      #TODO request body
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: Group identifier
+                  example: "foundry"
 
   /group/list:
     get:
@@ -299,7 +338,16 @@ paths:
           description: bad request
         "404":
           description: group identifier not found
-      #TODO request body
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: Group identifier
+                  example: "foundry"
 
   /itemprofile/sprite:
     get:
@@ -315,7 +363,16 @@ paths:
           description: bad request
         "404":
           description: item identifier not found
-      #TODO request body
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: Item identifier (in-game)
+                  example: "minecraft:iron_ingot"
 
   /itemprofile/create:
     post:
@@ -326,7 +383,16 @@ paths:
           description: ok
         "403":
           description: item profile already exists
-      #TODO request body
+      requestBody:
+        content:
+          application/json:
+          schema:
+            type: object
+              properties:
+                name:
+                  type: string
+                  description: Item identifier (in-game)
+                  example: "minecraft:iron_ingot"
 
   /itemprofile/edit:
     post:
@@ -339,7 +405,18 @@ paths:
           description: bad request
         "404":
           description: item identifier not found
-      #TODO request body
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                details:
+                  type: object
+                name:
+                  type: string
+                  description: Item identifier (in-game)
+                  example: "minecraft:iron_ingot"
 
   /itemprofile/remove:
     post:
@@ -352,7 +429,16 @@ paths:
           description: bad request
         "404":
           description: item identifier not found
-      #TODO request body
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: Item identifier (in-game)
+                  example: "minecraft:iron_ingot"
 
   /itemprofile/list:
     get:
